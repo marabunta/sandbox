@@ -25,7 +25,7 @@ func main() {
 		for {
 			log.Println("Sleeping...")
 			time.Sleep(time.Second)
-			msg := &pb.SimpleData{time.Now().Format(time.RFC3339Nano)}
+			msg := &pb.SimpleData{time.Now().Format(time.RFC3339Nano), struct{}{}, nil, 0}
 			log.Printf("msg: %q\n", msg.Msg)
 			stream.Send(msg)
 		}
