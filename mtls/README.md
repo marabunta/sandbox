@@ -1,1 +1,0 @@
-# Mutual authentication (mTLS  example)
