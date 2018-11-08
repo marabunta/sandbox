@@ -22,3 +22,8 @@ Or
 Output should be something like:
 
     2018/11/07 23:22:15 Greting: Hello foo
+
+On the server:
+
+    2018/11/07 23:22:10 Listening on port :1415
+    [127.0.0.1:63583 - client.example.com
