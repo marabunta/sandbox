@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/tls"
 	"crypto/x509"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net"
@@ -11,11 +12,18 @@ import (
 	pb "github.com/marabunta/sandbox/mTLS/helloworld"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/peer"
 )
 
 type server struct{}
 
 func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloReply, error) {
+	peer, ok := peer.FromContext(ctx)
+	if ok {
+		tlsInfo := peer.AuthInfo.(credentials.TLSInfo)
+		v := tlsInfo.State.VerifiedChains[0][0].Subject.CommonName
+		fmt.Printf("%v - %v\n", peer.Addr.String(), v)
+	}
 	return &pb.HelloReply{Message: "Hello " + in.Name}, nil
 }
 
@@ -52,6 +60,7 @@ func main() {
 		log.Fatalf("failed to listen: %s", err)
 	}
 
+	log.Println("Listening on port :1415")
 	if err := s.Serve(conn); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
