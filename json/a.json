@@ -1,8 +1,17 @@
 {
-    "description": "optional",
-    "enabled": 1,
-    "name": "name of the tasks",
-    "retries": 0,
-    "target": "where to execute the task",
-    "when": "when to execute it"
+  "description": "optional",
+  "enabled": 1,
+  "name": "name of the tasks",
+  "retries": 0,
+  "target": "where to execute the task",
+  "when": "when to execute it",
+  "payload": {
+    "attachments": {
+      "/tmp/ok.jpg": "base64"
+    },
+    "metadata": {
+      "key": "value"
+    },
+    "task": "command args"
+  }
 }
