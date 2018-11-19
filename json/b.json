@@ -1,0 +1,8 @@
+{
+    "enabled": 1,
+    "description": "optional",
+    "name": "name of the tasks",
+    "retries": 0,
+    "target": "where to execute the task",
+    "when": "when to execute it"
+}
