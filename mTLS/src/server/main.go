@@ -49,6 +49,7 @@ func main() {
 		ClientAuth:   tls.RequireAndVerifyClientCert,
 		Certificates: []tls.Certificate{certificate},
 		ClientCAs:    certPool,
+		MinVersion:   tls.VersionTLS12,
 	}
 
 	serverOption := grpc.Creds(credentials.NewTLS(tlsConfig))
