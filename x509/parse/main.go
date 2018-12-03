@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"crypto/x509"
 	"encoding/pem"
 	"fmt"
@@ -26,10 +27,21 @@ func main() {
 			break
 		}
 	}
-	c, err := x509.ParseCertificates(blocks)
+	certs, err := x509.ParseCertificates(blocks)
 	if err != nil {
-		fmt.Printf("Error: %s\n", err)
-		return
+		log.Fatal(err)
 	}
-	fmt.Printf("%s", c)
+
+	var certCA, certAnt *x509.Certificate
+
+	for _, cert := range certs {
+		if bytes.Compare(cert.RawIssuer, cert.RawSubject) == 0 && cert.IsCA {
+			certCA = cert
+		} else {
+			certAnt = cert
+		}
+	}
+
+	fmt.Printf("certCA = %+v\n", certCA.IsCA)
+	fmt.Printf("cert = %+v\n", certAnt.IsCA)
 }
