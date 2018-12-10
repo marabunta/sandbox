@@ -11,17 +11,16 @@ type Stream struct {
 }
 
 func main() {
-	var (
-		m sync.Map
-	)
+	m := &sync.Map{}
 
 	for i := 0; i < 10; i++ {
 		d, ok := m.Load("id")
 		if !ok {
-			d = map[string]int{"127.0.0.1:5000": i}
+			d = [][]string{[]string{"---------:5000", fmt.Sprintf("%d", i)}}
 		} else {
-			d.(map[string]int)[fmt.Sprintf("127.0.0.1:500%d", i)] = i
+			d = append(d.([][]string), []string{fmt.Sprintf("127.0.0.1:500%d", i), fmt.Sprintf("%d", i)})
 		}
+		fmt.Printf("len(d) = %+v\n", len(d.([][]string)))
 		m.Store("id", d)
 	}
 
@@ -32,4 +31,20 @@ func main() {
 	}
 	m.Range(mymap)
 
+	for i := 9; i > 0; i-- {
+		if items, ok := m.Load("id"); ok {
+			d := items.([][]string)
+			d = append(d[:i], d[i+1:]...)
+			if len(d) <= 1 {
+				fmt.Println("delete...")
+				m.Delete("id")
+			} else {
+				m.Store("id", d)
+			}
+			fmt.Printf("d = %+v\n", d)
+		}
+	}
+
+	_, ok := m.Load("id")
+	fmt.Printf("ok = %+v\n", ok)
 }
