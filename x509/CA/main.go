@@ -43,11 +43,11 @@ func main() {
 	certOut, err := os.Create("ca.crt")
 	pem.Encode(certOut, &pem.Block{Type: "CERTIFICATE", Bytes: ca_b})
 	certOut.Close()
-	log.Print("written cert.pem\n")
+	log.Print("written ca.crt\n")
 
 	keyOut, err := os.OpenFile("ca.key", os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600)
 	x509Encoded, _ := x509.MarshalECPrivateKey(priv)
 	pem.Encode(keyOut, &pem.Block{Type: "PRIVATE KEY", Bytes: x509Encoded})
 	keyOut.Close()
-	log.Print("written key.pem\n")
+	log.Print("written ca.key\n")
 }
